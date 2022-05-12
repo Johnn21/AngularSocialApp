@@ -1,6 +1,7 @@
 using API.Data;
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,5 +52,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseEndpoints(endpoints => {
+	endpoints.MapHub<PresenceHub>("hubs/presence");
+});
 
 await app.RunAsync();

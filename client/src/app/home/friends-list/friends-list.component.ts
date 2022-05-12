@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
 import { Friend } from 'src/app/models/friend';
 import { ChatModalComponent } from 'src/app/_modals/chat-modal/chat-modal.component';
 import { FriendService } from 'src/app/_services/friend.service';
+import { PresenceService } from 'src/app/_services/presence.service';
 
 @Component({
   selector: 'app-friends-list',
@@ -15,7 +17,7 @@ export class FriendsListComponent implements OnInit {
   bsModalRef: BsModalRef;
 
   constructor(private friendService: FriendService, private router: Router,
-     private modalService: BsModalService) { }
+     private modalService: BsModalService, public presence: PresenceService) { }
 
   ngOnInit(): void {
     this.getFriendsList();

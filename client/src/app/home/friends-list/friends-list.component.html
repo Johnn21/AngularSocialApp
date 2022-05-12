@@ -9,12 +9,30 @@
                             <img src="{{friend.photoUrl || '../../assets/user.png'}}"
                               class="card-img-top d-flex mt-1" alt="..." style="height: 30px; width: 30px; border-radius: 50%;">
                         </div>
-                        <div class="col-4">
+                        <div class="col-7">
                             <span style="padding-top: 10px" class="ms-3">{{friend.userName}}</span> 
                         </div>
-                        <div class="col-6" style="text-align: right;">
-                            <i (click)="$event.stopPropagation()" data-toggle="tooltip" 
+                        <div class="col-1">
+                         <i *ngIf="(presence.onlineUsers$ | async).includes(friend.userName)"
+                            style="display: contents; color: #11d111;" 
+                            class="fa fa-circle ms-2"
+                            data-toggle="tooltip"
+                            title="User active" 
+                            data-placement="right" >
+                        </i>
+                         <i *ngIf="!(presence.onlineUsers$ | async).includes(friend.userName)"
+                            style="display: contents; color: #6a726a;"
+                            data-toggle="tooltip"
+                            title="User inactive"
+                            data-placement="right" 
+                            class="fa fa-circle ms-2">
+                        </i>
+                        </div>
+                        <div class="col-2" style="text-align: right;">
+                            <i (click)="$event.stopPropagation()"
+                                data-toggle="tooltip" 
                                 data-placement="right" 
+                                style="color: #5e5ee5;"
                                 title="Send a message" 
                                 (click)="openChatModal(friend)" 
                                 class="fa fa-comment"></i>
