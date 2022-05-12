@@ -14,5 +14,8 @@ namespace API.Entities
 
         public ICollection<FriendshipRequest> FriendshipRequestsReceived { get; set; }
         public ICollection<FriendshipRequest> FriendshipRequestsSended { get; set; }
+
+        public ICollection<Message> MessagesSent { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
     }
 }

@@ -31,11 +31,11 @@ export class FriendsListComponent implements OnInit {
     this.router.navigateByUrl('/profile/' + friend.userName);
   }
 
-  openChatModal() {
+  openChatModal(friend: Friend) {
     const config = {
-      class: 'modal-dialog-centered',
+      class: 'modal-lg',
       initialState: {
-        
+        friend
       }
     }
     this.bsModalRef = this.modalService.show(ChatModalComponent, config);

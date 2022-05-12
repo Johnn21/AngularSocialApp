@@ -5,6 +5,7 @@ namespace API.Interfaces
         IUserRepository UserRepository { get; }
         IFriendshipRequestRepository FriendshipRequestRepository { get; }
         IFriendshipRepository FriendshipRepository { get; }
+        IMessageRepository MessageRepository { get; }
         Task<bool> Complete();
         bool HasChanges();
     }

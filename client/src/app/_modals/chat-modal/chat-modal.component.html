@@ -1,16 +1,49 @@
 <div class="modal-header">
-    <h4 class="modal-title pull-left">Chat Dialog</h4>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-      <span aria-hidden="true" class="visually-hidden">&times;</span>
-    </button>
+  <h4 class="modal-title pull-left">Chat Dialog</h4>
+  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="overflow-y: scroll; max-height: 300px;">
+  <div class="card">
+    <ng-container *ngIf="messages.length > 0">
+      <ul class="list-group list-group-flush" *ngFor="let message of messages">
+        <ng-container *ngIf="message.receiverUsername !== currentUserName">
+          <li class="list-group-item">
+            <div class="message" style="text-align: right;">
+              <span><strong>You: </strong>{{message.content}}</span><br>
+              <strong style="font-size: 10px;">{{message.dateMessageSend | date :'short'}}</strong>
+            </div>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="message.receiverUsername === currentUserName">
+          <li class="list-group-item">
+            <div class="message">
+              <span><strong>{{message.receiverUsername}}:</strong> {{message.content}}</span><br>
+              <strong style="font-size: 10px;">{{message.dateMessageSend | date :'short'}}</strong>
+            </div>
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+    <ng-container *ngIf="messages.length === 0">
+      <div class="py-5   d-flex justify-content-center">
+        <h4>You have no messages with {{friend.userName}}. Say hi! :)</h4>
+      </div>
+    </ng-container>
+    <div class="card-body">
+      <form #sendMessageForm="ngForm" id="sendMessageForm" (ngSubmit)="sendMessage()">
+        <div class="input-group mb-3 align-items-center">
+          <input [(ngModel)]="content" type="text" class="form-control" placeholder="Send message" name="sent-message"
+            id="sent-message">
+          <div class="input-group-append">
+            <button [disabled]="!content" form="sendMessageForm" type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="modal-body">
-    <ul>
-      <li>asdas</li>
-      <li>asdas</li>
-      <li>asdas</li>
-    </ul>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">close</button>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">close</button>
 </div>
