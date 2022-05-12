@@ -1,0 +1,61 @@
+<div class="profile" *ngIf="member">
+    <div class="row">
+        <div class="col-3">
+            <img src="{{member.photoUrl || '../../assets/user.png'}}" class="card-img-top" alt="...">
+        </div>
+        <div class="col-6">
+            <div class="d-flex justify-content-left">
+                <ul style="list-style: none; padding: 0">
+                    <li><h3>General info</h3></li>
+                    <li><strong>First name: </strong>{{member.firstName}}</li>
+                    <li><strong>Last name: </strong>{{member.lastName}}</li>
+                    <li><strong>Display name: </strong>{{member.displayName}}</li>
+                    <li><strong>Date of birth: </strong>{{member.dateOfBirth | date: 'dd/MM/yyyy'}}</li>
+                    <li><strong>Phone number: </strong>{{member.phoneNumber}}</li>
+                    <li><strong>Gender: </strong>{{member.gender}}</li>
+                </ul>
+            </div>
+            
+            <ng-container *ngIf="member.friendshipRequestStatus !== friendRequestStates.None
+               && member.friendshipRequestStatus !== friendRequestStates.Received && member.friendshipRequestStatus !== friendRequestStates.Friends">
+              <form (ngSubmit)="sendFriendshipRequest()">
+                <button [disabled]="member.friendshipRequestStatus === friendRequestStates.Requested" type="submit" class="btn btn-success">Send friendship request</button>
+              </form>
+            </ng-container>
+            <ng-container *ngIf="member.friendshipRequestStatus !== friendRequestStates.None 
+              && member.friendshipRequestStatus === friendRequestStates.Received && member.friendshipRequestStatus !== friendRequestStates.Friends">
+              <form (ngSubmit)="acceptFriendshipRequest()">
+                <button type="submit" class="btn btn-success">Accept friendship request</button>
+              </form>
+            </ng-container>
+            <ng-container *ngIf="member.friendshipRequestStatus === friendRequestStates.Friends">
+              <button class="btn btn-outline-primary" style="cursor: default;">Friends</button>
+              <i class="fa fa-check ms-1" style="color: #4f4fa5;"></i>
+            </ng-container>
+        </div>
+    </div>
+<div>
+    <hr/>
+    <tabset #staticTabs>
+      <tab heading="Description">
+        <div class="card">
+            <div class="card-body">
+                {{member.description}}
+            </div>
+          </div>
+        </tab>
+      <tab heading="Photos" style="margin-top:10px;">
+        <div class="row justify-content-center">
+          <div class="col-4">
+            <ngx-gallery [options]="galleryOptions"  [images]="galleryImages" style="display: inline-block; margin-bottom: 20px;"></ngx-gallery>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+
+</div>
+
+<div class="profile" *ngIf="!member">
+  <h1 style="text-align: center;">User not found</h1>
+</div>

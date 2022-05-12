@@ -1,0 +1,32 @@
+<div class="row" style="justify-content: right !important">
+    <div class="col-3 text-center">
+        <h3>Friends list</h3>
+        <ng-container *ngIf="friends.length > 0">
+            <ul *ngFor="let friend of friends" class="list-group" style="text-align: left; max-height: 400px; overflow-y: auto;">
+                <li (click)="navigateToUserProfile(friend)" style="cursor: pointer;" class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-1">
+                            <img src="{{friend.photoUrl || '../../assets/user.png'}}"
+                              class="card-img-top d-flex mt-1" alt="..." style="height: 30px; width: 30px; border-radius: 50%;">
+                        </div>
+                        <div class="col-4">
+                            <span style="padding-top: 10px" class="ms-3">{{friend.userName}}</span> 
+                        </div>
+                        <div class="col-6" style="text-align: right;">
+                            <i (click)="$event.stopPropagation()" data-toggle="tooltip" 
+                                data-placement="right" 
+                                title="Send a message" 
+                                (click)="openChatModal()" 
+                                class="fa fa-comment"></i>
+                        </div>
+                    </div>
+                </li>
+              </ul>
+        </ng-container>
+        <ng-container *ngIf="friends.length == 0">
+            <ul class="list-group" style="text-align: center; max-height: 400px; overflow-y: auto;">
+                <li class="list-group-item">You do not have any friends</li>
+              </ul>
+        </ng-container>
+    </div>
+</div>
