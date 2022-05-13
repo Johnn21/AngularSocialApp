@@ -3,4 +3,5 @@ export class Message {
     dateMessageSend: Date;
     senderUsername: string;
     receiverUsername: string;
+    dateMessageRead: Date;
 }

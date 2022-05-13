@@ -6,5 +6,6 @@ namespace API.DTOs
         public DateTime DateMessageSend { get; set; }
         public string SenderUsername { get; set; }
         public string ReceiverUsername { get; set; }
+        public DateTime? DateMessageRead { get; set; }
     }
 }

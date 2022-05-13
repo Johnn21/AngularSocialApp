@@ -5,6 +5,7 @@ namespace API.Entities
         public int Id { get; set; }
         public string Content { get; set; }
         public DateTime DateMessageSend { get; set; } = DateTime.Now;
+        public DateTime? DateMessageRead { get; set; }
 
         public string SenderUserId { get; set; }
         public AppUser SenderUser { get; set; }

@@ -13,6 +13,7 @@
             <div class="message" style="text-align: right;">
               <span><strong>You: </strong>{{message.content}}</span><br>
               <strong style="font-size: 10px;">{{message.dateMessageSend | date :'short'}}</strong>
+              <p *ngIf="message.dateMessageRead" style="font-size: 10px;">Read at: {{message.dateMessageRead | date :'short'}}</p>
             </div>
           </li>
         </ng-container>
