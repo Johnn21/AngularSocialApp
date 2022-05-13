@@ -1,8 +1,6 @@
-using API.Data;
 using API.Extensions;
 using API.Middleware;
 using API.SignalR;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -55,6 +53,7 @@ app.MapControllers();
 
 app.UseEndpoints(endpoints => {
 	endpoints.MapHub<PresenceHub>("hubs/presence");
+	endpoints.MapHub<MessageHub>("hubs/message");
 });
 
 await app.RunAsync();

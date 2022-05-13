@@ -6,8 +6,8 @@
 </div>
 <div class="modal-body" style="overflow-y: scroll; max-height: 300px;">
   <div class="card">
-    <ng-container *ngIf="messages.length > 0">
-      <ul class="list-group list-group-flush" *ngFor="let message of messages">
+    <ng-container *ngIf="(messageService.messageThread$ | async).length > 0">
+      <ul class="list-group list-group-flush" *ngFor="let message of (messageService.messageThread$ | async)">
         <ng-container *ngIf="message.receiverUsername !== currentUserName">
           <li class="list-group-item">
             <div class="message" style="text-align: right;">
@@ -26,13 +26,13 @@
         </ng-container>
       </ul>
     </ng-container>
-    <ng-container *ngIf="messages.length === 0">
-      <div class="py-5   d-flex justify-content-center">
+    <ng-container *ngIf="(messageService.messageThread$ | async).length === 0">
+      <div class="py-5 d-flex justify-content-center">
         <h4>You have no messages with {{friend.userName}}. Say hi! :)</h4>
       </div>
     </ng-container>
     <div class="card-body">
-      <form #sendMessageForm="ngForm" id="sendMessageForm" (ngSubmit)="sendMessage()">
+      <form #sendMessageForm="ngForm" id="sendMessageForm" (ngSubmit)="sendMessageSignalR()">
         <div class="input-group mb-3 align-items-center">
           <input [(ngModel)]="content" type="text" class="form-control" placeholder="Send message" name="sent-message"
             id="sent-message">

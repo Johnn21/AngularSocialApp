@@ -27,6 +27,8 @@ namespace API.Controllers
 
             if (receiveruser == null) return BadRequest("This user does not exist");
 
+            if (receiveruser.Id == User.GetUserId()) return BadRequest("You can not send messages to yourself");
+
             bool friendship = await _unitOfWork.FriendshipRepository.CheckFriendship(User.GetUserId(), receiveruser.Id);
 
             if (!friendship) return BadRequest("You must be a friend with this user in order to send a message");

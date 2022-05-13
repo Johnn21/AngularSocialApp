@@ -5,6 +5,7 @@ import { take } from 'rxjs';
 import { Friend } from 'src/app/models/friend';
 import { ChatModalComponent } from 'src/app/_modals/chat-modal/chat-modal.component';
 import { FriendService } from 'src/app/_services/friend.service';
+import { MessageService } from 'src/app/_services/message.service';
 import { PresenceService } from 'src/app/_services/presence.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class FriendsListComponent implements OnInit {
   bsModalRef: BsModalRef;
 
   constructor(private friendService: FriendService, private router: Router,
-     private modalService: BsModalService, public presence: PresenceService) { }
+     private modalService: BsModalService, public presence: PresenceService, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.getFriendsList();
@@ -41,6 +42,9 @@ export class FriendsListComponent implements OnInit {
       }
     }
     this.bsModalRef = this.modalService.show(ChatModalComponent, config);
+    this.bsModalRef.content.hideEvent.pipe(take(1)).subscribe(() => {
+      this.messageService.stopHubConnection();
+    });
   }
 
 }

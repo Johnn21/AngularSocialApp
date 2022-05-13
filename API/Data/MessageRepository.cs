@@ -32,5 +32,30 @@ namespace API.Data
                         .OrderBy(x => x.DateMessageSend)
                         .ToListAsync();
         }
+
+        public async Task<Group> GetGroupForConnection(string connectionId)
+        {
+            return await _context.Groups
+                    .Include(c => c.Connections)
+                    .Where(c => c.Connections.Any(x => x.ConnectionId == connectionId))
+                    .FirstOrDefaultAsync();
+        }
+
+        public void RemoveConnection(Connection connection)
+        {
+            _context.Connections.Remove(connection);
+        }
+
+        public async Task<Group> GetMessageGroup(string groupName)
+        {
+            return await _context.Groups
+                .Include(c => c.Connections)
+                .FirstOrDefaultAsync(x => x.Name == groupName);
+        }
+
+        public void AddGroup(Group group)
+        {
+            _context.Groups.Add(group);
+        }
     }
 }

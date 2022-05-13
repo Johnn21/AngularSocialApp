@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs';
 import { Friend } from 'src/app/models/friend';
 import { Message } from 'src/app/models/message';
+import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { MessageService } from 'src/app/_services/message.service';
 
@@ -18,12 +19,15 @@ export class ChatModalComponent implements OnInit {
   public messages: Message[] = [];
   public currentUserName: string;
   @ViewChild('sendMessageForm') sendMessageForm: NgForm;
+  hideEvent: EventEmitter<any> = new EventEmitter();
+  user: User;
 
-  constructor(public bsModalRef: BsModalRef, private messageService: MessageService,
+  constructor(public bsModalRef: BsModalRef, public messageService: MessageService,
      private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.getMessagesBetweenUsers();
+    // this.getMessagesBetweenUsers();
+    this.getCurrentUser();
   }
 
   sendMessage() {
@@ -35,18 +39,30 @@ export class ChatModalComponent implements OnInit {
     })
   }
 
+  sendMessageSignalR() {
+    this.messageService.sendMessageSignalR(this.content, this.friend.userName).then(() => {
+      this.sendMessageForm.reset();
+    })
+  }
+
   getMessagesBetweenUsers() {
     this.messageService.getMessagesBetweenusers(this.friend.userName).subscribe((result) => {
       if (result.length > 0) {
         this.messages = result;
-        this.getCurrentUserName();
+        this.getCurrentUser();
       }
     })
   }
 
-  private getCurrentUserName() {
+  ngOnDestroy(){
+    this.hideEvent.next(null);
+  }
+
+  private getCurrentUser() {
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+      this.user = user;
       this.currentUserName = user.userName;
+      this.messageService.createHubConnection(user, this.friend.userName);
     });
   }
 
