@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Group } from '../models/group';
 import { Message } from '../models/message';
 import { User } from '../models/user';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class MessageService {
   private messageThreadSource = new BehaviorSubject<Message[]>([]);
   messageThread$ = this.messageThreadSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private presence: PresenceService) { }
 
   createHubConnection(user: User, otherUsername: string) {
     this.hubConnection = new HubConnectionBuilder()
@@ -40,13 +41,11 @@ export class MessageService {
       })
 
       this.hubConnection.on('UpdatedGroup', (group: Group) => {
-        console.log(group)
         if (group.connections.some(x => x.username === otherUsername)) {
           this.messageThread$.pipe(take(1)).subscribe(messages => {
             messages.forEach(message => {
               if (!message.dateMessageRead) {
                 message.dateMessageRead = new Date(Date.now());
-                console.log(message)
               }
             })
 
@@ -62,18 +61,15 @@ export class MessageService {
     }
   }
 
-  sendMessage(content: string, receiverUsername: string) {
-    const data = {'content': content, 'receiverUsername': receiverUsername};
-    return this.http.post<any>(this.apiUrl + 'message/send-message', data); 
-  }
-
-  async sendMessageSignalR(content: string, receiverUsername: string) {
+  async sendMessage(content: string, receiverUsername: string) {
     const data = {'content': content, 'receiverUsername': receiverUsername};
     return this.hubConnection.invoke('SendMessage', data)
       .catch(error => console.log(error));
   }
 
-  getMessagesBetweenusers(username: string) {
-    return this.http.get<Message[]>(this.apiUrl + 'message/get-messages-between-users/' + username);
+  async sendTypingInfo(content: string, receiverUsername: string) {
+    const data = {'content': content, 'receiverUsername': receiverUsername};
+    return this.hubConnection.invoke('SenderIsTyping', data)
+      .catch(error => console.log(error));
   }
 }

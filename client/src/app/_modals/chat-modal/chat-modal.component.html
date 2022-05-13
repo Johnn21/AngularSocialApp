@@ -34,13 +34,14 @@
     </ng-container>
     <div class="card-body">
       <form #sendMessageForm="ngForm" id="sendMessageForm" (ngSubmit)="sendMessageSignalR()">
-        <div class="input-group mb-3 align-items-center">
-          <input [(ngModel)]="content" type="text" class="form-control" placeholder="Send message" name="sent-message"
+        <div class="input-group align-items-center mb-0">
+          <input (keyup)="userIsTyping()" [(ngModel)]="content" type="text" class="form-control" placeholder="Send message" name="sent-message"
             id="sent-message">
           <div class="input-group-append">
             <button [disabled]="!content" form="sendMessageForm" type="submit" class="btn btn-primary">Send</button>
           </div>
         </div>
+        <p *ngIf="(presence.otherUserIsTyping$ | async)">{{friend.userName}} is typing...</p>
       </form>
     </div>
   </div>

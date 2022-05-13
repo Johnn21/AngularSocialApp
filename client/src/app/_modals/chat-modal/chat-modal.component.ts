@@ -7,6 +7,7 @@ import { Message } from 'src/app/models/message';
 import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { MessageService } from 'src/app/_services/message.service';
+import { PresenceService } from 'src/app/_services/presence.service';
 
 @Component({
   selector: 'app-chat-modal',
@@ -23,35 +24,21 @@ export class ChatModalComponent implements OnInit {
   user: User;
 
   constructor(public bsModalRef: BsModalRef, public messageService: MessageService,
-     private accountService: AccountService) {}
+     private accountService: AccountService, public presence: PresenceService) {}
 
   ngOnInit(): void {
-    // this.getMessagesBetweenUsers();
     this.getCurrentUser();
   }
 
-  sendMessage() {
-    this.messageService.sendMessage(this.content, this.friend.userName).subscribe((result) => {
-      if (result) {
-        this.messages = [...this.messages, result];
-        this.sendMessageForm.reset();
-      }
-    })
-  }
-
   sendMessageSignalR() {
-    this.messageService.sendMessageSignalR(this.content, this.friend.userName).then(() => {
+    this.messageService.sendMessage(this.content, this.friend.userName).then(() => {
       this.sendMessageForm.reset();
+      this.userIsTyping();
     })
   }
 
-  getMessagesBetweenUsers() {
-    this.messageService.getMessagesBetweenusers(this.friend.userName).subscribe((result) => {
-      if (result.length > 0) {
-        this.messages = result;
-        this.getCurrentUser();
-      }
-    })
+  userIsTyping() {
+    this.messageService.sendTypingInfo(this.content, this.friend.userName);
   }
 
   ngOnDestroy(){

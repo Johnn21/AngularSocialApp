@@ -13,6 +13,8 @@ export class PresenceService {
   private onlineUsersSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUsersSource.asObservable();
   private hubConnection: HubConnection;
+  private otherUserIsTypingSource = new BehaviorSubject<boolean>(false);
+  otherUserIsTyping$ = this.otherUserIsTypingSource.asObservable();
 
   constructor(private toastr: ToastrService) { }
 
@@ -46,6 +48,10 @@ export class PresenceService {
 
       this.hubConnection.on('NewMessageReceived', ({username}) => {
         this.toastr.info(username + ' has sent you a new message!');
+      })
+
+      this.hubConnection.on('OtherUserIsTyping', (isTyping: boolean) => {
+        this.otherUserIsTypingSource.next(isTyping);
       })
   }
 

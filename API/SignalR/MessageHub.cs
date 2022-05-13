@@ -48,6 +48,36 @@ namespace API.SignalR
             await base.OnDisconnectedAsync(exception);
         }
 
+        public async Task SenderIsTyping(SenderTypingDto senderTypingDto) 
+        {
+            var username = Context.User.GetUsername();
+
+            if (username == senderTypingDto.ReceiverUsername)
+                throw new HubException("You cannot type messages to yourself");
+
+            var receiver = await _unitOfWork.UserRepository.GetMemberByUsernameAsync(senderTypingDto.ReceiverUsername);
+
+            if (receiver == null) throw new HubException("Not found user");
+
+            var groupName = GetGroupName(username, receiver.UserName);
+
+            var group = await _unitOfWork.MessageRepository.GetMessageGroup(groupName);
+
+            if (group.Connections.Any(x => x.Username == receiver.UserName))
+            {
+                var connections = await _tracker.GetConnectionsForUser(receiver.UserName);
+
+                if (!string.IsNullOrEmpty(senderTypingDto.Content))
+                {
+                    await _presenceHub.Clients.Clients(connections).SendAsync("OtherUserIsTyping", true);
+                }
+                else 
+                {
+                    await _presenceHub.Clients.Clients(connections).SendAsync("OtherUserIsTyping", false);
+                }
+            }
+        }
+
         public async Task SendMessage(SendMessageDto sendMessageDto)
         {
             var username = Context.User.GetUsername();
