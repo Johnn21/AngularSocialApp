@@ -7,6 +7,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     BsDropdownModule.forRoot(),
     FileUploadModule,
     NgxGalleryModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    CdkStepperModule
   ],
   exports: [
     BsDatepickerModule,
@@ -28,7 +30,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     BsDropdownModule,
     FileUploadModule,
     NgxGalleryModule,
-    ModalModule
+    ModalModule,
+    CdkStepperModule
   ]
 })
 export class SharedModule { }

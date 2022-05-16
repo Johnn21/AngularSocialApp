@@ -6,6 +6,7 @@ namespace API.Interfaces
         IFriendshipRequestRepository FriendshipRequestRepository { get; }
         IFriendshipRepository FriendshipRepository { get; }
         IMessageRepository MessageRepository { get; }
+        IPostRepository PostRepository { get; }
         Task<bool> Complete();
         bool HasChanges();
     }

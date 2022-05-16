@@ -15,6 +15,7 @@ namespace API.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
+        public DbSet<Post> Post { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -46,6 +47,11 @@ namespace API.Data
             builder.Entity<Message>()
                 .HasOne(s => s.SenderUser)
                 .WithMany(d => d.MessagesSent)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Post>()
+                .HasOne(s => s.AppUser)
+                .WithMany(d => d.Posts)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -69,7 +69,6 @@ export class PhotoUpdateComponent implements OnInit {
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
-        console.log(response)
         const photo: Photo = JSON.parse(response);
         this.currentUser.photos.push(photo);
         if (photo.isMain) {

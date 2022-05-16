@@ -1,0 +1,10 @@
+<h2>Add Post</h2>
+
+<app-stepper [linearModeSelected]="true" #appStepper>
+    <cdk-step [label]="'Post Info'">
+        <app-add-post-info></app-add-post-info>
+    </cdk-step>
+    <cdk-step [label]="'Post Photo'">
+        <app-add-post-photo></app-add-post-photo>
+    </cdk-step>
+</app-stepper>

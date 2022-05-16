@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
+import { AddPostComponent } from './add-post/add-post.component';
 import { FriendRequestsComponent } from './friend-requests/friend-requests.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -26,6 +27,7 @@ const routes: Routes = [
       {path: 'profile/:username', component: ProfileComponent},
       {path: 'update-profile/:username', component: UpdateProfileComponent},
       {path: 'friend-requests/:username', component: FriendRequestsComponent},
+      {path: 'add-post', component: AddPostComponent}
     ]
   },
   {

@@ -23,6 +23,10 @@ import { FriendRequestsComponent } from './friend-requests/friend-requests.compo
 import { FriendsListComponent } from './home/friends-list/friends-list.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ChatModalComponent } from './_modals/chat-modal/chat-modal.component';
+import { AddPostComponent } from './add-post/add-post.component';
+import { AddPostInfoComponent } from './add-post/add-post-info/add-post-info.component';
+import { AddPostPhotoComponent } from './add-post/add-post-photo/add-post-photo.component';
+import { StepperComponent } from './stepper/stepper.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,11 @@ import { ChatModalComponent } from './_modals/chat-modal/chat-modal.component';
     PhotoUpdateComponent,
     FriendRequestsComponent,
     FriendsListComponent,
-    ChatModalComponent
+    ChatModalComponent,
+    AddPostComponent,
+    AddPostInfoComponent,
+    AddPostPhotoComponent,
+    StepperComponent
   ],
   imports: [
     BrowserModule,
