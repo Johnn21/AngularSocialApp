@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs';
@@ -14,22 +14,15 @@ import { PresenceService } from 'src/app/_services/presence.service';
   styleUrls: ['./friends-list.component.css']
 })
 export class FriendsListComponent implements OnInit {
-  friends: Friend[] = [];
   bsModalRef: BsModalRef;
+  @Input() friends: Friend[];
 
   constructor(private friendService: FriendService, private router: Router,
      private modalService: BsModalService, public presence: PresenceService, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.getFriendsList();
   }
 
-  getFriendsList() {
-    this.friendService.getFriendsList().subscribe((result) => {
-      this.friends = result;
-    })
-  }
-  
   navigateToUserProfile(friend: Friend) {
     this.router.navigateByUrl('/profile/' + friend.userName);
   }

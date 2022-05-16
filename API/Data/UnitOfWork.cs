@@ -17,7 +17,7 @@ namespace API.Data
         public IFriendshipRequestRepository FriendshipRequestRepository => new FriendshipRequestRepository(_context);
         public IFriendshipRepository FriendshipRepository => new FriendshipRepository(_context, _mapper);
         public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);
-        public IPostRepository PostRepository => new PostRepository(_context);
+        public IPostRepository PostRepository => new PostRepository(_context, _mapper);
 
         public async Task<bool> Complete()
         {

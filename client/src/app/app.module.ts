@@ -27,6 +27,7 @@ import { AddPostComponent } from './add-post/add-post.component';
 import { AddPostInfoComponent } from './add-post/add-post-info/add-post-info.component';
 import { AddPostPhotoComponent } from './add-post/add-post-photo/add-post-photo.component';
 import { StepperComponent } from './stepper/stepper.component';
+import { PostsWallComponent } from './home/posts-wall/posts-wall.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { StepperComponent } from './stepper/stepper.component';
     AddPostComponent,
     AddPostInfoComponent,
     AddPostPhotoComponent,
-    StepperComponent
+    StepperComponent,
+    PostsWallComponent
   ],
   imports: [
     BrowserModule,

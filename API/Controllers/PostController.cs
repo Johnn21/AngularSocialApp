@@ -61,5 +61,13 @@ namespace API.Controllers
 
             return BadRequest("Failed to add a photo to your post");
         }
+
+        [HttpGet("get-friends-posts")]
+        public async Task<ActionResult> GetFriendsPost([FromQuery]int skipPosts)
+        {
+            var posts = await _unitOfWork.PostRepository.GetFriendsPost(User.GetUserId(), skipPosts, Constants.PostsParams.TakePosts);
+
+            return Ok(posts);
+        }
     }
 }

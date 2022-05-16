@@ -1,3 +1,8 @@
-<p>home works!</p>
-
-<app-friends-list></app-friends-list>
+<div class="row">
+    <div class="col-9 d-flex justify-content-center">
+        <app-posts-wall [posts]="posts"></app-posts-wall>
+    </div>
+    <div class="col-3">
+        <app-friends-list [friends]="friends"></app-friends-list>
+    </div>
+</div>

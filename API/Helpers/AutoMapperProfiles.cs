@@ -22,7 +22,13 @@ namespace API.Helpers
                             opt => opt.MapFrom(src => src.SenderUser.UserName))
                 .ForMember(dest => dest.ReceiverUsername,
                             opt => opt.MapFrom(src => src.ReceiverUser.UserName));
-                            
+            CreateMap<Post, PostDto>()
+                .ForMember(dest => dest.Username,
+                            opt => opt.MapFrom(src => src.AppUser.UserName))
+                .ForMember(dest => dest.UserPhoto,
+                            opt => opt.MapFrom(src => src.AppUser.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.PhotoUrl,
+                            opt => opt.MapFrom(src => src.PhotoPost.Url));                            
         }
     }
 }

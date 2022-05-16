@@ -1,3 +1,4 @@
+using API.DTOs;
 using API.Entities;
 
 namespace API.Interfaces
@@ -6,5 +7,6 @@ namespace API.Interfaces
     {
         void AddPost(Post post);
         Task<Post> GetLastPost();
+        Task<List<PostDto>> GetFriendsPost(string currentUserId, int skipPosts, int takePosts);
     }
 }
