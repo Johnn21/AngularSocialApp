@@ -2,6 +2,7 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,11 +11,13 @@ namespace API.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPhotoService _photoService;
+        private readonly IMapper _mapper;
 
-        public PostController(IUnitOfWork unitOfWork, IPhotoService photoService)
+        public PostController(IUnitOfWork unitOfWork, IPhotoService photoService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _photoService = photoService;
+            _mapper = mapper;
         }
         
         [HttpPost("add-post")]
@@ -63,11 +66,118 @@ namespace API.Controllers
         }
 
         [HttpGet("get-friends-posts")]
-        public async Task<ActionResult> GetFriendsPost([FromQuery]int skipPosts)
+        public async Task<ActionResult<List<PostDto>>> GetFriendsPost([FromQuery]int skipPosts)
         {
             var posts = await _unitOfWork.PostRepository.GetFriendsPost(User.GetUserId(), skipPosts, Constants.PostsParams.TakePosts);
 
-            return Ok(posts);
+            return posts;
         }
+
+        [HttpPost("add-dislike-to-post/{postId}")]
+        public async Task<ActionResult<PostDto>> AddDislikeToPost(int postId)
+        {
+            var post = await _unitOfWork.PostRepository.GetPostByIdWithLikes(postId);
+
+            if (post == null) return BadRequest("This post does not exist");
+
+            var postLike = post.Likes
+                .Where(x => x.AppUserId == User.GetUserId())
+                .SingleOrDefault();
+
+            if (postLike != null) 
+            {
+                if (!postLike.Liked) 
+                {
+                    post.Likes.Remove(postLike);
+                    post.DislikesCount--;
+                }
+
+                if (postLike.Liked) 
+                {
+                    postLike.Liked = false;
+                    post.LikesCount--;
+                    post.DislikesCount++;
+                }
+
+                _unitOfWork.PostRepository.Update(post);
+            }
+            else
+            {
+                var like = new Like
+                {
+                    Liked = false,
+                    AppUserId = User.GetUserId(),
+                    PostId = post.Id,
+                    // Post = post
+                };
+
+                post.DislikesCount++;
+
+                post.Likes.Add(like);
+            }
+
+            if (await _unitOfWork.Complete())
+            {
+                var postDto = _mapper.Map<PostDto>(post);
+
+                return Ok(postDto);
+            }
+
+            return BadRequest("Failed to add dislike to post");            
+        }
+
+        [HttpPost("add-like-to-post/{postId}")]
+        public async Task<ActionResult<PostDto>> AddLikeToPost(int postId)
+        {
+            var post = await _unitOfWork.PostRepository.GetPostByIdWithLikes(postId);
+
+            if (post == null) return BadRequest("This post does not exist");
+
+            var postLike = post.Likes
+                .Where(x => x.AppUserId == User.GetUserId())
+                .SingleOrDefault();
+
+            if (postLike != null) 
+            {
+                if (postLike.Liked)
+                {
+                    post.Likes.Remove(postLike);
+                    post.LikesCount--;
+                }
+
+                if (!postLike.Liked)
+                {
+                   postLike.Liked = true;
+                   post.LikesCount++;
+                   post.DislikesCount--;
+                }
+
+                _unitOfWork.PostRepository.Update(post);
+            }
+            else
+            {
+                var like = new Like
+                {
+                    Liked = true,
+                    AppUserId = User.GetUserId(),
+                    PostId = post.Id,
+                    // Post = post
+                };
+
+                post.LikesCount++;
+
+                post.Likes.Add(like);
+            }
+
+            if (await _unitOfWork.Complete())
+            {
+                var postDto = _mapper.Map<PostDto>(post);
+
+                return Ok(postDto);
+            } 
+
+            return BadRequest("Failed to add like to post");
+        }
+
     }
 }

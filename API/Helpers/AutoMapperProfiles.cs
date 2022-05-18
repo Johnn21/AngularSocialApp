@@ -28,7 +28,8 @@ namespace API.Helpers
                 .ForMember(dest => dest.UserPhoto,
                             opt => opt.MapFrom(src => src.AppUser.Photos.FirstOrDefault(x => x.IsMain).Url))
                 .ForMember(dest => dest.PhotoUrl,
-                            opt => opt.MapFrom(src => src.PhotoPost.Url));                            
+                            opt => opt.MapFrom(src => src.PhotoPost.Url));        
+            CreateMap<Like, LikeDto>();         
         }
     }
 }

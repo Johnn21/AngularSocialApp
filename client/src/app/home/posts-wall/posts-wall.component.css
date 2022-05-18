@@ -1,7 +1,7 @@
 .btn-like {
-    background-color: DodgerBlue; 
+    background-color: white; 
     border: none;
-    color: white; 
+    color: black; 
     font-size: 16px;
     cursor: pointer;
   }
@@ -9,3 +9,12 @@
   .btn:hover {
     background-color: RoyalBlue;
   }
+
+  .btn-liked {
+    background-color: white; 
+    border: none;
+    color: dodgerblue; 
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

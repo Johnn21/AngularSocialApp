@@ -15,8 +15,14 @@
             </div>
           </div>
           <div class="likes d-flex justify-content-center mt-2">
-            <button class="btn-like me-2"><i class="fa fa-thumbs-up"></i>5 </button>
-            <button class="btn-like ms-2"><i class="fa fa-thumbs-down"></i>3 </button>
+            <button 
+              [ngClass]="{'btn-like me-2' : (post.likes.length === 0 || !post.likes?.[0].liked),
+                          'btn-liked me-2' : (post.likes.length  > 0 && post.likes?.[0].liked)}"
+              (click)="addLikeToPost(post)"><i class="fa fa-thumbs-up"></i>{{post.likesCount}}</button>
+            <button 
+              [ngClass]="{'btn-like ms-2' : (post.likes.length === 0 || post.likes?.[0].liked),
+                          'btn-liked ms-2' : (post.likes.length  > 0 && !post.likes?.[0].liked)}"
+            class="btn-like ms-2" (click)="addDislikeToPost(post)"><i class="fa fa-thumbs-down"></i>{{post.dislikesCount}}</button>
           </div>
     </div>
     <div class="my-5">

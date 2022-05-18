@@ -22,4 +22,12 @@ export class PostService {
 
     return this.http.get<Post[]>(this.apiUrl + 'post/get-friends-posts', {params});
   }
+
+  addLikeToPost(postId: number) {
+    return this.http.post<Post>(this.apiUrl + 'post/add-like-to-post/' + postId, {});
+  }
+
+  addDislikeToPost(postId: number) {
+    return this.http.post<Post>(this.apiUrl + 'post/add-dislike-to-post/' + postId, {});
+  }
 }

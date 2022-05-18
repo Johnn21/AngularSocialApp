@@ -8,5 +8,7 @@ namespace API.Interfaces
         void AddPost(Post post);
         Task<Post> GetLastPost();
         Task<List<PostDto>> GetFriendsPost(string currentUserId, int skipPosts, int takePosts);
+        Task<Post> GetPostByIdWithLikes(int postId);
+        void Update(Post post);
     }
 }

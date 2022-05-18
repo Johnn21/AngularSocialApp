@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20220517072748_AddLikeTable")]
+    partial class AddLikeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
@@ -160,8 +162,7 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Like", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("AppUserId")
@@ -170,12 +171,7 @@ namespace API.Data.Migrations
                     b.Property<bool>("Liked")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
+                    b.HasKey("PostId");
 
                     b.ToTable("Likes");
                 });
@@ -273,13 +269,7 @@ namespace API.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DislikesCount")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("HasPhoto")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LikesCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -448,11 +438,13 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Like", b =>
                 {
-                    b.HasOne("API.Entities.Post", null)
+                    b.HasOne("API.Entities.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>

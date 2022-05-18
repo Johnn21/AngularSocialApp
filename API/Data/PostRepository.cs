@@ -46,17 +46,41 @@ namespace API.Data
                     var friendPosts = await _context.Post
                         .Where(x => x.AppUserId.Equals(friendId.FriendUserId))
                         .Include(p => p.PhotoPost)
+                        .Include(l => l.Likes)
                         .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                         .Skip(skipPosts * takePosts)
                         .Take(takePosts)
                         .OrderByDescending(x => x.DateCreated)
                         .ToListAsync();
+
+                    foreach(var friendPost in friendPosts.ToList()) 
+                    {
+                        foreach(var like in friendPost.Likes.ToList())
+                        {
+                            if (like.AppUserId != currentUserId)
+                            {
+                                friendPost.Likes.Remove(like);
+                            }
+                        }
+                    }
                         
                     if (friendPosts.Any()) posts.AddRange(friendPosts);
                 }
             }
 
             return posts;
+        }
+
+        public async Task<Post> GetPostByIdWithLikes(int postId)
+        {
+            return await _context.Post
+                .Include(l => l.Likes)
+                .SingleAsync(x => x.Id == postId);
+        }
+
+        public void Update(Post post)
+        {
+            _context.Entry(post).State = EntityState.Modified;
         }
     }
 }
