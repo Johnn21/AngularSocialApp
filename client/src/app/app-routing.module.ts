@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ActivateAccountComponent } from './account/activate-account/activate-account.component';
+import { ForgotPasswordComponent } from './account/forgot-password/forgot-password.component';
 import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
 import { AddPostComponent } from './add-post/add-post.component';
@@ -38,6 +40,8 @@ const routes: Routes = [
       {path: 'login', component: LoginComponent},
       {path: 'start-page', component: StartPageComponent},
       {path: 'register', component: RegisterComponent},
+      {path: 'activate-account/:confirmationToken/:username', component: ActivateAccountComponent},
+      {path: 'forgot-password', component: ForgotPasswordComponent}
     ]
   },
   {path: '**', component: NotFoundComponent, pathMatch: 'full'}

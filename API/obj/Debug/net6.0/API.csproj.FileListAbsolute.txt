@@ -63,3 +63,7 @@ D:\Proiecte\AngularSocialApp\api\bin\Debug\net6.0\System.IdentityModel.Tokens.Jw
 D:\Proiecte\AngularSocialApp\api\bin\Debug\net6.0\AutoMapper.dll
 D:\Proiecte\AngularSocialApp\api\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\Proiecte\AngularSocialApp\api\bin\Debug\net6.0\CloudinaryDotNet.dll
+D:\Proiecte\AngularSocialApp\api\bin\Debug\net6.0\MailKit.dll
+D:\Proiecte\AngularSocialApp\api\bin\Debug\net6.0\MimeKit.dll
+D:\Proiecte\AngularSocialApp\api\bin\Debug\net6.0\NETCore.MailKit.dll
+D:\Proiecte\AngularSocialApp\api\bin\Debug\net6.0\BouncyCastle.Crypto.dll

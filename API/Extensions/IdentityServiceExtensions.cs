@@ -12,9 +12,12 @@ namespace API.Extensions
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
             services
-                .AddIdentityCore<AppUser>()
+                .AddIdentityCore<AppUser>( config => {
+                    config.SignIn.RequireConfirmedEmail = true;
+                })
                 .AddSignInManager<SignInManager<AppUser>>()
-                .AddEntityFrameworkStores<StoreContext>();
+                .AddEntityFrameworkStores<StoreContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

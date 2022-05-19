@@ -36,9 +36,12 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
             break;
             case 401: 
-              if(error.error === "Invalid credentials"){
+              if (error.error === "Invalid credentials"){
                 this.toastr.error(error.statusText, "Invalid credentials");
-              }else{
+              } else if (error.error === "Email not confirmed") {
+                this.toastr.error(error.statusText, "Email not confirmed");
+              }
+              else{
                 this.toastr.error(error.statusText === "OK" ? "Unauthorized" : error.statusText, error.status);
               }
             break;

@@ -5,6 +5,8 @@ using API.Services;
 using API.SignalR;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 
 namespace API.Extensions
 {
@@ -30,6 +32,12 @@ namespace API.Extensions
             services.AddSignalR(o =>
             {
              o.EnableDetailedErrors = true;
+            });
+
+            var mailKitOptions = config.GetSection("Email").Get<MailKitOptions>();
+
+            services.AddMailKit(config => {
+                config.UseMailKit(mailKitOptions);
             });
 
             return services;

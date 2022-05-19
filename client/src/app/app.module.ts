@@ -30,6 +30,11 @@ import { StepperComponent } from './stepper/stepper.component';
 import { PostsWallComponent } from './home/posts-wall/posts-wall.component';
 import { ProfileFriendsComponent } from './profile/profile-friends/profile-friends.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ActivateAccountComponent } from './account/activate-account/activate-account.component';
+import { ForgotPasswordComponent } from './account/forgot-password/forgot-password.component';
+import { ForgotPasswordSendEmailComponent } from './account/forgot-password/forgot-password-send-email/forgot-password-send-email.component';
+import { ForgotPasswordConfirmCodeComponent } from './account/forgot-password/forgot-password-confirm-code/forgot-password-confirm-code.component';
+import { ForgotPasswordNewComponent } from './account/forgot-password/forgot-password-new/forgot-password-new.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +56,12 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     AddPostPhotoComponent,
     StepperComponent,
     PostsWallComponent,
-    ProfileFriendsComponent
+    ProfileFriendsComponent,
+    ActivateAccountComponent,
+    ForgotPasswordComponent,
+    ForgotPasswordSendEmailComponent,
+    ForgotPasswordConfirmCodeComponent,
+    ForgotPasswordNewComponent
   ],
   imports: [
     BrowserModule,

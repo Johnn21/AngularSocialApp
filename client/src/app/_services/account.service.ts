@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { map, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
@@ -13,14 +14,13 @@ export class AccountService {
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient, private presence: PresenceService) { }
+  constructor(private http: HttpClient, private presence: PresenceService, private router: Router) { }
 
   register(model: any) {
     return this.http.post(this.apiUrl + 'account/register', model).pipe(
-      map((user: User) => {
-        if(user){
-          this.setCurrentUser(user);
-          this.presence.createHubConnection(user);
+      map((result: boolean) => {
+        if(result){
+          return true;
         }
       })
     )
@@ -35,6 +35,22 @@ export class AccountService {
         }
       })
     )
+  }
+
+  activateAccount(accountConfirmationToken: string, username: string) {
+    return this.http.post(this.apiUrl + 'account/activate-account', {accountConfirmationToken, username});
+  }
+
+  sendResetPasswordCodeToEmail(email: any) {
+    return this.http.post(this.apiUrl + 'account/reset-password-email-confirmation/' + email, {});
+  }
+
+  checkResetPasswordCode(code: string, email: string) {
+    return this.http.post(this.apiUrl + 'account/reset-password-check-code/' + code + '/' + email, {});
+  }
+
+  resetPasswordNew(email: string, password: string) {
+    return this.http.post(this.apiUrl + 'account/reset-password-new', {email, password});
   }
 
   logout() {
