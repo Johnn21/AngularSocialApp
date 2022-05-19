@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -135,7 +136,19 @@ namespace API.Controllers
         [HttpGet("get-friends-list")]
         public async Task<ActionResult<List<FriendDto>>> GetFriendsList()
         {
-            var friends = await _unitOfWork.FriendshipRepository.GetFriendsByCurrentUserId(User.GetUserId());
+            var friends = await _unitOfWork.FriendshipRepository.GetFriendsByUserId(User.GetUserId());
+
+            return Ok(friends);
+        }
+
+        [HttpGet("get-profile-friends-list/{username}")]
+        public async Task<ActionResult<PagedList<FriendDto>>> GetProfileFriendsList([FromQuery]PaginationParams paginationParams, string username)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+
+            var friends = await _unitOfWork.FriendshipRepository.GetFriendsByUserIdPaginated(paginationParams, User.GetUserId());
+
+            Response.AddPaginationHeader(friends.CurrentPage, friends.PageSize, friends.TotalCount, friends.TotalPages);
 
             return Ok(friends);
         }

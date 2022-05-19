@@ -28,6 +28,8 @@ import { AddPostInfoComponent } from './add-post/add-post-info/add-post-info.com
 import { AddPostPhotoComponent } from './add-post/add-post-photo/add-post-photo.component';
 import { StepperComponent } from './stepper/stepper.component';
 import { PostsWallComponent } from './home/posts-wall/posts-wall.component';
+import { ProfileFriendsComponent } from './profile/profile-friends/profile-friends.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { PostsWallComponent } from './home/posts-wall/posts-wall.component';
     AddPostInfoComponent,
     AddPostPhotoComponent,
     StepperComponent,
-    PostsWallComponent
+    PostsWallComponent,
+    ProfileFriendsComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { PostsWallComponent } from './home/posts-wall/posts-wall.component';
     ReactiveFormsModule,
     TabsModule.forRoot(),
     FormsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

@@ -1,0 +1,29 @@
+<ng-container *ngIf="profileFriendsList.length > 0">
+    <div class="row">
+        <ng-container *ngFor="let friend of profileFriendsList">
+            <div class="col-4 my-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{friend.photoUrl || '../../assets/user.png'}}"alt="Card image cap">
+                    <div class="card-body">
+                      <h3 class="card-title">{{friend.userName}}</h3>
+                      <a href="/profile/{{friend.userName}}" class="btn btn-primary">Visit profile</a>
+                    </div>
+                  </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+
+<div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;"
+        firstText="&laquo;" 
+        lastText="&raquo;"> 
+    </pagination>
+</div>

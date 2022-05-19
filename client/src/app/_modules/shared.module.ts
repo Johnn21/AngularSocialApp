@@ -8,6 +8,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CdkStepperModule } from '@angular/cdk/stepper';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
     FileUploadModule,
     NgxGalleryModule,
     ModalModule.forRoot(),
-    CdkStepperModule
+    CdkStepperModule,
+    PaginationModule.forRoot()
   ],
   exports: [
     BsDatepickerModule,
@@ -31,7 +33,8 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
     FileUploadModule,
     NgxGalleryModule,
     ModalModule,
-    CdkStepperModule
+    CdkStepperModule,
+    PaginationModule
   ]
 })
 export class SharedModule { }

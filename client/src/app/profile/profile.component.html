@@ -37,19 +37,26 @@
 <div>
     <hr/>
     <tabset #staticTabs>
-      <tab heading="Description">
+      <tab heading="Description" (selectTab)="onTabActivated($event)">
         <div class="card">
             <div class="card-body">
                 {{member.description}}
             </div>
           </div>
         </tab>
-      <tab heading="Photos" style="margin-top:10px;">
+      <tab heading="Photos" style="margin-top:10px;" (selectTab)="onTabActivated($event)">
         <div class="row justify-content-center">
           <div class="col-4">
             <ngx-gallery [options]="galleryOptions"  [images]="galleryImages" style="display: inline-block; margin-bottom: 20px;"></ngx-gallery>
           </div>
         </div>
+      </tab>
+      <tab heading="Friends" style="margin-top:10px;" (selectTab)="onTabActivated($event)">
+        <app-profile-friends 
+        [profileFriendsList]="profileFriendsList"
+        [pagination]="pagination"
+        (currentPage)="pageChangedEvent($event)"
+        ></app-profile-friends>
       </tab>
     </tabset>
   </div>

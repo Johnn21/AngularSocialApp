@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { ToastrService } from 'ngx-toastr';
-import { take } from 'rxjs';
+import { map, take } from 'rxjs';
+import { Friend } from '../models/friend';
 import { Member } from '../models/member';
+import { Pagination } from '../models/pagination';
 import { User } from '../models/user';
+import { FriendParams } from '../params/friendParams';
 import { FriendRequestState } from '../_constants/friend_request_state';
 import { AccountService } from '../_services/account.service';
 import { FriendService } from '../_services/friend.service';
@@ -21,6 +24,9 @@ export class ProfileComponent implements OnInit {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   user: User;
+  profileFriendsList: Friend[] = [];
+  pagination: Pagination;
+  friendParams: FriendParams;
 
   friendRequestStates = {
     None: FriendRequestState.None,
@@ -52,6 +58,26 @@ export class ProfileComponent implements OnInit {
         preview: false
       }
     ]
+
+    this.friendParams = new FriendParams();
+  }
+
+  onTabActivated(event) {
+    if(event.heading === 'Friends') {
+      this.getProfileFriendsList();
+    }
+  }
+
+  getProfileFriendsList() {
+    this.friendService.getPaginatedProfileFriendsList(this.username, this.friendParams).subscribe((result) => {
+      this.profileFriendsList = result.result;
+      this.pagination = result.pagination;
+    })
+  }
+
+  pageChangedEvent(event: number) {
+    this.friendParams.pageNumber = event;
+    this.getProfileFriendsList();
   }
 
   getImages(): NgxGalleryImage[] {
