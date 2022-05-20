@@ -1,8 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { PaginatedResult } from '../models/pagination';
 import { Post } from '../models/post';
 import { PostComment } from '../models/post-comment';
+import { PostParams } from '../params/postParams';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +41,24 @@ export class PostService {
 
   getPostComments(postId: number, skipPostComments: number) {
     return this.http.get<PostComment[]>(this.apiUrl + 'post/get-post-comments/' + postId + '/' + skipPostComments);
+  }
+  
+  getPagiantedProfilePostsList(username: string, friendParams: PostParams) {
+    const paginatedResult: PaginatedResult<Post[]> = new PaginatedResult<Post[]>();
+
+    let params = new HttpParams();
+
+    params = params.append('pageNumber', friendParams.pageNumber.toString());
+    params = params.append('pageSize', friendParams.pageSize.toString());
+
+    return this.http.get<Post[]>(this.apiUrl + 'post/get-profile-posts/' + username, { observe: 'response', params }).pipe(
+      map(response => {
+        paginatedResult.result = response.body;
+        if (response.headers.get('Pagination') !== null) {
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResult;
+      })
+    )
   }
 }

@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces
 {
@@ -12,5 +13,6 @@ namespace API.Interfaces
         void Update(Post post);
         Task<Post> GetPostByIdWithPostComments(int postId);
         Task<List<PostCommentDto>> GetPostCommentsByPostId(int postId, int skipPostComments, int takePostComments);
+        Task<PagedList<PostDto>> GetProfilePostsPaginated(PaginationParams paginationParams, string username);
     }
 }

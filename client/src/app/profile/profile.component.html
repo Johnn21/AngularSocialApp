@@ -58,6 +58,13 @@
         (currentPage)="pageChangedEvent($event)"
         ></app-profile-friends>
       </tab>
+      <tab heading="Posts" style="margin-top:10px;" (selectTab)="onTabActivated($event)">
+        <app-profile-posts
+        [profilePostsList]="profilePostsList"
+        [postPagination]="postPagination"
+        (currentPagePosts)="pageChangedPostsEvent($event)"
+        ></app-profile-posts>
+      </tab>
     </tabset>
   </div>
 

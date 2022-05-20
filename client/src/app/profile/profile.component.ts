@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { ToastrService } from 'ngx-toastr';
 import { map, take } from 'rxjs';
 import { Friend } from '../models/friend';
 import { Member } from '../models/member';
 import { Pagination } from '../models/pagination';
+import { Post } from '../models/post';
 import { User } from '../models/user';
 import { FriendParams } from '../params/friendParams';
+import { PostParams } from '../params/postParams';
 import { FriendRequestState } from '../_constants/friend_request_state';
 import { AccountService } from '../_services/account.service';
 import { FriendService } from '../_services/friend.service';
 import { MemberService } from '../_services/member.service';
+import { PostService } from '../_services/post.service';
 
 @Component({
   selector: 'app-profile',
@@ -27,6 +30,9 @@ export class ProfileComponent implements OnInit {
   profileFriendsList: Friend[] = [];
   pagination: Pagination;
   friendParams: FriendParams;
+  profilePostsList: Post[] = [];
+  postParams: PostParams;
+  postPagination: Pagination;
 
   friendRequestStates = {
     None: FriendRequestState.None,
@@ -40,7 +46,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private memberService: MemberService, private route: ActivatedRoute,
        private router: Router, private toastr: ToastrService, private friendService: FriendService,
-       private accountService: AccountService) {
+       private accountService: AccountService, private postService: PostService) {
     this.username = this.route.snapshot.paramMap.get('username');
    }
 
@@ -60,11 +66,16 @@ export class ProfileComponent implements OnInit {
     ]
 
     this.friendParams = new FriendParams();
+    this.postParams = new PostParams();
   }
 
   onTabActivated(event) {
     if(event.heading === 'Friends') {
       this.getProfileFriendsList();
+    }
+
+    if(event.heading === 'Posts') {
+      this.getProfilePostsList();
     }
   }
 
@@ -75,9 +86,21 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  getProfilePostsList() {
+    this.postService.getPagiantedProfilePostsList(this.username, this.postParams).subscribe((result) => {
+      this.profilePostsList = result.result;
+      this.postPagination = result.pagination;
+    })
+  }
+
   pageChangedEvent(event: number) {
     this.friendParams.pageNumber = event;
     this.getProfileFriendsList();
+  }
+
+  pageChangedPostsEvent(event: number) {
+    this.postParams.pageNumber = event;
+    this.getProfilePostsList();
   }
 
   getImages(): NgxGalleryImage[] {
@@ -95,7 +118,6 @@ export class ProfileComponent implements OnInit {
   getMemberByUsername() {
     this.memberService.getMemberByUsername(this.username).subscribe(member => {
       this.member = member;
-      console.log(this.member);
       if (this.member) {
         this.galleryImages = this.getImages();
       }

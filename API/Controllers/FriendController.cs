@@ -144,8 +144,6 @@ namespace API.Controllers
         [HttpGet("get-profile-friends-list/{username}")]
         public async Task<ActionResult<PagedList<FriendDto>>> GetProfileFriendsList([FromQuery]PaginationParams paginationParams, string username)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
-
             var friends = await _unitOfWork.FriendshipRepository.GetFriendsByUserIdPaginated(paginationParams, User.GetUserId());
 
             Response.AddPaginationHeader(friends.CurrentPage, friends.PageSize, friends.TotalCount, friends.TotalPages);

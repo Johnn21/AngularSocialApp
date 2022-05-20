@@ -1,0 +1,30 @@
+<ng-container *ngIf="profilePostsList.length > 0">
+    <div class="row">
+        <ng-container *ngFor="let post of profilePostsList">
+
+            <div class="card my-3">
+                <div class="row">
+                    <div class="col-3">
+                        <img *ngIf="post.hasPhoto" class="card-img-top" src="{{post.photoUrl}}" alt="...">
+                    </div>
+                    <div class="col-5">
+                        <div class="card-body">
+                            <h3 class="card-title">{{post.title}}</h3>
+                            <p class="card-text">{{post.description}}</p>
+                        </div>
+                        <span class="mb-2 ms-2">Posted At: {{post.dateCreated | date :'short'}}</span>
+                    </div>
+                </div>
+            </div>
+
+        </ng-container>
+    </div>
+</ng-container>
+
+<div class="d-flex justify-content-center" *ngIf="postPagination">
+    <pagination [boundaryLinks]="true" [totalItems]="postPagination.totalItems"
+        [itemsPerPage]="postPagination.itemsPerPage" [(ngModel)]="postPagination.currentPage"
+        (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+        lastText="&raquo;">
+    </pagination>
+</div>

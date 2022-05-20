@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -48,9 +49,9 @@ namespace API.Data
                         .Include(p => p.PhotoPost)
                         .Include(l => l.Likes)
                         .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                        .OrderByDescending(x => x.DateCreated)
                         .Skip(skipPosts * takePosts)
                         .Take(takePosts)
-                        .OrderByDescending(x => x.DateCreated)
                         .ToListAsync();
 
                     foreach(var friendPost in friendPosts.ToList()) 
@@ -101,6 +102,27 @@ namespace API.Data
                 .Skip(skipPostComments * takePostComments)
                 .Take(takePostComments)
                 .ToListAsync(); 
+        }
+
+        public async Task<PagedList<PostDto>> GetProfilePostsPaginated(PaginationParams paginationParams, string username)
+        {
+            var count = await _context.Post
+                .Include(x => x.AppUser)
+                .Where(x => x.AppUser.UserName == username)
+                .CountAsync();
+
+            var posts = await _context.Post
+                    .Include(p => p.PhotoPost)
+                    .Include(l => l.Likes)
+                    .Include(u => u.AppUser)
+                    .Where(x => x.AppUser.UserName == username)
+                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                    .OrderByDescending(x => x.DateCreated)
+                    .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                    .Take(paginationParams.PageSize)
+                    .ToListAsync();
+
+            return new PagedList<PostDto>(posts, count, paginationParams.PageNumber, paginationParams.PageSize);
         }
     }
 }

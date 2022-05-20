@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -212,6 +213,16 @@ namespace API.Controllers
             var postComments = await _unitOfWork.PostRepository.GetPostCommentsByPostId(postId, skipPostComments, Constants.PostCommentParams.TakeCommentPosts);
 
             return Ok(postComments);
+        }
+
+        [HttpGet("get-profile-posts/{username}")]
+        public async Task<ActionResult<List<PostDto>>> GetProfilePosts([FromQuery]PaginationParams paginationParams, string username)
+        {
+            var posts = await _unitOfWork.PostRepository.GetProfilePostsPaginated(paginationParams, username);
+
+            Response.AddPaginationHeader(posts.CurrentPage, posts.PageSize, posts.TotalCount, posts.TotalPages);
+
+            return Ok(posts);
         }
 
     }
