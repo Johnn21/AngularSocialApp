@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-body" style="width: 30rem;">
+        <h5 class="card-title">Comments</h5>
+        <input placeholder="Add a comment..." type="text" name="added-post-comment"
+                id="added-post-comment" #addedPostComment class="mb-2">
+            <button (click)="submitPostComment()">Add</button>
+        <ng-container *ngIf="postComments.length > 0">
+            <ul *ngFor="let postComment of postComments" style="list-style: none; background-color: #f8f5f0 !important;">
+                <li style="padding-top: 1rem;">{{postComment.content}}</li>
+                <li class="d-flex align-items-center" style="padding-bottom: 1rem;"><b style="font-size: 11px;" class="me-3">{{postComment.dateCreated | date :'short'}}</b> Comment by:  
+                    <img src="{{postComment.userPhoto || '../../assets/user.png'}}"
+                    class="card-img-top d-flex mt-1 ms-2"
+                    alt="..."
+                    style="height: 30px; width: 30px; border-radius: 50%;">
+                    <span>{{postComment.username}}</span></li>
+            </ul>
+        </ng-container>
+        <ng-container *ngIf="postComments.length === 0">
+            <p>This post have no comments</p>
+        </ng-container>
+    </div>
+</div>

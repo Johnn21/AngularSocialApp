@@ -14,6 +14,7 @@
               <p class="card-text">{{post.description}}</p>
             </div>
           </div>
+          <app-post-comment [postId]="post.id"></app-post-comment>
           <div class="likes d-flex justify-content-center mt-2">
             <button 
               [ngClass]="{'btn-like me-2' : (post.likes.length === 0 || !post.likes?.[0].liked),
@@ -22,7 +23,7 @@
             <button 
               [ngClass]="{'btn-like ms-2' : (post.likes.length === 0 || post.likes?.[0].liked),
                           'btn-liked ms-2' : (post.likes.length  > 0 && !post.likes?.[0].liked)}"
-            class="btn-like ms-2" (click)="addDislikeToPost(post)"><i class="fa fa-thumbs-down"></i>{{post.dislikesCount}}</button>
+              (click)="addDislikeToPost(post)"><i class="fa fa-thumbs-down"></i>{{post.dislikesCount}}</button>
           </div>
     </div>
     <div class="my-5">

@@ -35,6 +35,7 @@ import { ForgotPasswordComponent } from './account/forgot-password/forgot-passwo
 import { ForgotPasswordSendEmailComponent } from './account/forgot-password/forgot-password-send-email/forgot-password-send-email.component';
 import { ForgotPasswordConfirmCodeComponent } from './account/forgot-password/forgot-password-confirm-code/forgot-password-confirm-code.component';
 import { ForgotPasswordNewComponent } from './account/forgot-password/forgot-password-new/forgot-password-new.component';
+import { PostCommentComponent } from './home/posts-wall/post-comment/post-comment.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ForgotPasswordNewComponent } from './account/forgot-password/forgot-pas
     ForgotPasswordComponent,
     ForgotPasswordSendEmailComponent,
     ForgotPasswordConfirmCodeComponent,
-    ForgotPasswordNewComponent
+    ForgotPasswordNewComponent,
+    PostCommentComponent
   ],
   imports: [
     BrowserModule,

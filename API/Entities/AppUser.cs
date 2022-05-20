@@ -21,5 +21,6 @@ namespace API.Entities
         public ICollection<Message> MessagesReceived { get; set; }
 
         public ICollection<Post> Posts { get; set; }
+        public ICollection<PostComment> PostComments { get; set; }
     }
 }

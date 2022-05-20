@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post';
+import { PostComment } from '../models/post-comment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,13 @@ export class PostService {
 
   addDislikeToPost(postId: number) {
     return this.http.post<Post>(this.apiUrl + 'post/add-dislike-to-post/' + postId, {});
+  }
+
+  addPostComment(postId: number, content: string) {
+    return this.http.post<PostComment>(this.apiUrl + 'post/add-comment-to-post', {postId, content});
+  }
+
+  getPostComments(postId: number) {
+    return this.http.get<PostComment[]>(this.apiUrl + 'post/get-post-comments/' + postId);
   }
 }

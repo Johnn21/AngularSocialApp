@@ -17,6 +17,7 @@ namespace API.Data
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Post> Post { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<PostComment> PostComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -55,14 +56,16 @@ namespace API.Data
                 .WithMany(d => d.Posts)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // builder.Entity<Post>()
-            //     .HasMany(s => s.Likes)
-            //     .WithOne(d => d.Post)
-            //     .HasForeignKey(s => s.PostId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-            
-            // builder.Entity<Like>()
-            //     .HasKey(k => new {k.PostId});
+            builder.Entity<PostComment>()
+                .HasOne(s => s.Post)
+                .WithMany(d => d.PostComments)
+                .HasForeignKey(f => f.PostId);
+
+            builder.Entity<PostComment>()
+                .HasOne(s => s.AppUser)
+                .WithMany(d => d.PostComments)
+                .HasForeignKey(f => f.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -82,5 +82,23 @@ namespace API.Data
         {
             _context.Entry(post).State = EntityState.Modified;
         }
+
+        public async Task<Post> GetPostByIdWithPostComments(int postId)
+        {
+            return await _context.Post
+                .Include(pc => pc.PostComments)
+                .SingleOrDefaultAsync(x => x.Id == postId);
+        }
+
+        public async Task<List<PostCommentDto>> GetPostCommentsByPostId(int postId)
+        {
+            return await _context.PostComments
+                .Include(u => u.AppUser)
+                .ThenInclude(p => p.Photos)
+                .Where(p => p.PostId == postId)
+                .ProjectTo<PostCommentDto>(_mapper.ConfigurationProvider)
+                .OrderByDescending(o => o.DateCreated)
+                .ToListAsync();
+        }
     }
 }

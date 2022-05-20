@@ -179,5 +179,40 @@ namespace API.Controllers
             return BadRequest("Failed to add like to post");
         }
 
+        [HttpPost("add-comment-to-post")]
+        public async Task<ActionResult<PostCommentDto>> AddCommentToPost(AddCommentToPostDto addCommentToPostDto)
+        {
+            var post = await _unitOfWork.PostRepository.GetPostByIdWithPostComments(addCommentToPostDto.PostId);
+
+            if (post == null) return BadRequest("This post does not exist");
+
+            if (string.IsNullOrEmpty(addCommentToPostDto.Content)) return BadRequest("Content can not be empty");
+
+            var postComment = new PostComment
+            {
+                Content = addCommentToPostDto.Content,
+                PostId = addCommentToPostDto.PostId,
+                Post = post,
+                AppUserId = User.GetUserId(),
+                AppUser = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername())
+            };
+
+            post.PostComments.Add(postComment);
+
+            var postDto = _mapper.Map<PostCommentDto>(postComment);
+
+            if (await _unitOfWork.Complete()) return Ok(postDto);
+
+            return BadRequest("Failed to add a post comment");
+        }
+
+        [HttpGet("get-post-comments/{postId}")]
+        public async Task<ActionResult<List<PostCommentDto>>> GetPostComments(int postId)
+        {
+            var postComments = await _unitOfWork.PostRepository.GetPostCommentsByPostId(postId);
+
+            return Ok(postComments);
+        }
+
     }
 }
