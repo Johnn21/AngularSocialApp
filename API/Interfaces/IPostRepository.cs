@@ -11,6 +11,6 @@ namespace API.Interfaces
         Task<Post> GetPostByIdWithLikes(int postId);
         void Update(Post post);
         Task<Post> GetPostByIdWithPostComments(int postId);
-        Task<List<PostCommentDto>> GetPostCommentsByPostId(int postId);
+        Task<List<PostCommentDto>> GetPostCommentsByPostId(int postId, int skipPostComments, int takePostComments);
     }
 }

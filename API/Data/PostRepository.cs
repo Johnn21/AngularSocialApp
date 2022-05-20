@@ -90,7 +90,7 @@ namespace API.Data
                 .SingleOrDefaultAsync(x => x.Id == postId);
         }
 
-        public async Task<List<PostCommentDto>> GetPostCommentsByPostId(int postId)
+        public async Task<List<PostCommentDto>> GetPostCommentsByPostId(int postId, int skipPostComments, int takePostComments)
         {
             return await _context.PostComments
                 .Include(u => u.AppUser)
@@ -98,7 +98,9 @@ namespace API.Data
                 .Where(p => p.PostId == postId)
                 .ProjectTo<PostCommentDto>(_mapper.ConfigurationProvider)
                 .OrderByDescending(o => o.DateCreated)
-                .ToListAsync();
+                .Skip(skipPostComments * takePostComments)
+                .Take(takePostComments)
+                .ToListAsync(); 
         }
     }
 }

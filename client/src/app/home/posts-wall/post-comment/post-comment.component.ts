@@ -13,6 +13,8 @@ export class PostCommentComponent implements OnInit {
   postComments: PostComment[] = [];
 
   @ViewChild('addedPostComment') postComment;
+  skipPostComments: number = 0;
+  noMorePostComments: boolean = false;
 
   constructor(private postService: PostService, private toastr: ToastrService) { }
 
@@ -32,9 +34,19 @@ export class PostCommentComponent implements OnInit {
   }
 
   getPostComments() {
-    this.postService.getPostComments(this.postId).subscribe((result) => {
-      this.postComments = result;
+    this.postService.getPostComments(this.postId, this.skipPostComments).subscribe((result) => {
+      if(result.length === 0 && this.postComments.length > 0) {
+        this.toastr.warning("No more comments to get");
+        this.noMorePostComments = true;
+      } else {
+        this.postComments = [...this.postComments, ...result];
+      }
     })
+  }
+
+  getMorePostComments() {
+    this.skipPostComments++;
+    this.getPostComments();
   }
 
 }

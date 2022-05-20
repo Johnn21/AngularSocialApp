@@ -206,10 +206,10 @@ namespace API.Controllers
             return BadRequest("Failed to add a post comment");
         }
 
-        [HttpGet("get-post-comments/{postId}")]
-        public async Task<ActionResult<List<PostCommentDto>>> GetPostComments(int postId)
+        [HttpGet("get-post-comments/{postId}/{skipPostComments}")]
+        public async Task<ActionResult<List<PostCommentDto>>> GetPostComments(int postId, int skipPostComments)
         {
-            var postComments = await _unitOfWork.PostRepository.GetPostCommentsByPostId(postId);
+            var postComments = await _unitOfWork.PostRepository.GetPostCommentsByPostId(postId, skipPostComments, Constants.PostCommentParams.TakeCommentPosts);
 
             return Ok(postComments);
         }

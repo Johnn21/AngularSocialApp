@@ -36,7 +36,7 @@ export class PostService {
     return this.http.post<PostComment>(this.apiUrl + 'post/add-comment-to-post', {postId, content});
   }
 
-  getPostComments(postId: number) {
-    return this.http.get<PostComment[]>(this.apiUrl + 'post/get-post-comments/' + postId);
+  getPostComments(postId: number, skipPostComments: number) {
+    return this.http.get<PostComment[]>(this.apiUrl + 'post/get-post-comments/' + postId + '/' + skipPostComments);
   }
 }

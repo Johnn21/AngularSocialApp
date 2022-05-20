@@ -22,7 +22,8 @@ export class PostsWallComponent implements OnInit {
   getMorePosts() {
     this.skipPosts++;
     this.postService.getFriendsPost(this.skipPosts).subscribe((result) => {
-      if (result.length === 0){
+      if (result.length === 0 && this.posts.length > 0) {
+        this.toastr.warning("No more posts to get");
         this.noMorePosts = true;
       } else {
         this.posts = [...this.posts, ...result];

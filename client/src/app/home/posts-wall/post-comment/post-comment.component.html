@@ -14,6 +14,9 @@
                     style="height: 30px; width: 30px; border-radius: 50%;">
                     <span>{{postComment.username}}</span></li>
             </ul>
+            <div class="d-flex justify-content-center">
+                <a [hidden]="noMorePostComments" href="javascript:void(0)" (click)="getMorePostComments()">Get more comments...</a>
+            </div>
         </ng-container>
         <ng-container *ngIf="postComments.length === 0">
             <p>This post have no comments</p>
